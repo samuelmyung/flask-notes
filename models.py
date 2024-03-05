@@ -36,11 +36,11 @@ class User(db.Model):
     )
 
     first_name = db.Column(
-        db.string(30),
+        db.String(30),
         nullable=False
     )
 
     last_name = db.Column(
-        db.string(30),
+        db.String(30),
         nullable=False
     )

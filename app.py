@@ -18,3 +18,35 @@ connect_db(app)
 db.create_all()
 
 toolbar = DebugToolbarExtension(app)
+
+
+@app.get("/")
+def homepage():
+    """Redirects to /register"""
+
+    return redirect('/register')
+
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    """Registers user and handles register form submission"""
+
+    form = RegisterForm()
+
+    if form.validate_on_submit():
+        username = form.username.data
+        password = form.hashed_password.data
+        email = form.email.data
+        first_name = form.first_name.data
+        last_name = form.last_name.data
+
+        user = User(username=username, hashed_password=password,
+                    email=email, first_name=first_name, last_name=last_name)
+        db.session.add(user)
+        db.session.commit()
+
+        return redirect(f'/users/{username}')
+
+    else:
+        return render_template("register.html", form=form)
+
