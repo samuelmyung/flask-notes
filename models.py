@@ -6,12 +6,14 @@ db = SQLAlchemy()
 
 bcrypt = Bcrypt()
 
+
 def connect_db(app):
     """Connect to database."""
 
     app.app_context().push()
     db.app = app
     db.init_app(app)
+
 
 class User(db.Model):
     """Site User"""
@@ -26,7 +28,6 @@ class User(db.Model):
     hashed_password = db.Column(
         db.String(100),
         nullable=False,
-        #Do we have to make this unique?
     )
 
     email = db.Column(
@@ -65,7 +66,7 @@ class User(db.Model):
 
         u = cls.query.filter_by(username=username).one_or_none()
 
-        if u and bcrypt.check_password_hash(u.password, pwd):
+        if u and bcrypt.check_password_hash(u.hashed_password, pwd):
 
             return u
         else:
