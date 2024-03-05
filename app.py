@@ -3,7 +3,7 @@ import os
 from flask import Flask, render_template, redirect, session
 from flask_debugtoolbar import DebugToolbarExtension
 
-from models import Note, db, connect_db
+from models import User, db, connect_db
 from forms import RegisterForm, LoginForm, CSRFProtectForm
 
 app = Flask(__name__)
@@ -40,13 +40,26 @@ def register():
         first_name = form.first_name.data
         last_name = form.last_name.data
 
-        user = User(username=username, hashed_password=password,
-                    email=email, first_name=first_name, last_name=last_name)
+        user = User.register(
+            username,
+            password,
+            email,
+            first_name,
+            last_name
+            )
+
         db.session.add(user)
         db.session.commit()
+        session["username"] = user.username
 
         return redirect(f'/users/{username}')
 
     else:
         return render_template("register.html", form=form)
 
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    """Logs in user and handles login form submission"""
+
+    form = LoginForm()
