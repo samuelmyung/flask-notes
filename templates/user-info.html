@@ -12,6 +12,49 @@
   <li>Last Name: {{user.last_name}}</li>
 </ul>
 
+<ul>
+  {% for note in notes %}
+  <li>
+    <em>{{note.title}}</em>
+
+    <p>{{note.content}}</p>
+
+    <form>
+      <input
+      type="submit"
+      class="btn btn-primary"
+      formaction="/notes/{{note.id}}/update"
+      formmethod="GET"
+      value="Edit Note">
+
+      <input
+      type="submit"
+      class="btn btn-danger"
+      formaction="/notes/{{note.id}}/delete"
+      formmethod="POST"
+      value="Delete Note">
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+
+<!-- Do we have to set method for form -->
+<form>
+  <input
+  type="submit"
+  class="btn btn-success"
+  formaction="/users/{{user.username}}/notes/add"
+  formmethod="GET"
+  value="Add Notes">
+
+  <input
+  type="submit"
+  class="btn btn-danger"
+  formaction="/user/{{user.username}}/delete"
+  formmethod="POST"
+  value="Delete User">
+</form>
+
 <form action="/logout" method="POST">
   {{form.hidden_tag()}}
   <button type="submit" class="btn btn-primary">Logout</button>
