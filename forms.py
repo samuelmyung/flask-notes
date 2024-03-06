@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, EmailField
+from wtforms import StringField, PasswordField, EmailField, TextAreaField
 from wtforms.validators import InputRequired, Length
 
 
@@ -42,6 +42,34 @@ class LoginForm(FlaskForm):
 
     hashed_password = PasswordField(
         "Password",
+        validators=[InputRequired()]
+    )
+
+
+class AddNoteForm(FlaskForm):
+    """Form for adding notes"""
+
+    title = StringField(
+        "Title",
+        validators=[InputRequired(), Length(max=100)]
+    )
+
+    content = TextAreaField(
+        "Content",
+        validators=[InputRequired()]
+    )
+
+
+class UpdateNoteForm(FlaskForm):
+    """Form for editing notes"""
+
+    title = StringField(
+        "Title",
+        validators=[InputRequired(), Length(max=100)]
+    )
+
+    content = TextAreaField(
+        "Content",
         validators=[InputRequired()]
     )
 
